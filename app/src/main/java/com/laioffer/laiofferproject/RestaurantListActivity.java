@@ -1,32 +1,47 @@
 package com.laioffer.laiofferproject;
 
+import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class RestaurantListActivity extends AppCompatActivity {
+public class RestaurantListActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_list);
-//        Log.e("Life cycle test", "We are at onCreate()");
+        Log.e("Life cycle test", "We are at onCreate()");
+        // Show different fragments based on screen size.
+        if (findViewById(R.id.fragment_container) != null) {
+            Fragment fragment = isTablet() ?
+                    new RestaurantGridFragment() : new RestaurantListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, fragment).commit();
+        }
+//        // Get ListView object from xml.
+//        ListView restaurantListView = (ListView) findViewById(R.id.restaurant_list);
+//
+//        // Initialize an adapter.
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                this,
+//                R.layout.activity_restaurant_list_item,
+//                R.id.restaurant_name,
+//                getRestaurantNames());
+//
+//        // Assign adapter to ListView.
+//        restaurantListView.setAdapter(adapter);
 
-        // Get ListView object from xml.
-        ListView restaurantListView = (ListView) findViewById(R.id.restaurant_list);
+    }
 
-        // Initialize an adapter.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                R.layout.activity_restaurant_list_item,
-                R.id.restaurant_name,
-                getRestaurantNames());
-
-        // Assign adapter to ListView.
-        restaurantListView.setAdapter(adapter);
-
+    private boolean isTablet() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     /**
