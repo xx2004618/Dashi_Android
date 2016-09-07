@@ -25,8 +25,8 @@ public class RestaurantGridFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_grid, container, false);
-        GridView gridView = (GridView) view.findViewById(R.id.restaurant_grid);
-        gridView.setAdapter(new RestaurantAdapter(getActivity()));
+//        GridView gridView = (GridView) view.findViewById(R.id.restaurant_grid);
+//        gridView.setAdapter(new RestaurantAdapter(getActivity()));
         return view;
     }
 

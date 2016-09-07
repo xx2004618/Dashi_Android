@@ -1,5 +1,7 @@
 package com.laioffer.laiofferproject;
 
+import android.graphics.Bitmap;
+
 /**
  * A class for restaurant, which contains all information of a restaurant.
  */
@@ -13,18 +15,22 @@ public class Restaurant {
     private String type;
     private double lat;
     private double lng;
+    private Bitmap thumbnail;
+    private Bitmap rating;
 
     /**
      * Constructor
      *
      * @param name name of the restaurant
      */
-    public Restaurant(String name, String address, String type, double lat, double lng) {
+    public Restaurant(String name, String address, String type, double lat, double lng, Bitmap thumbnail, Bitmap rating) {
         this.name = name;
         this.address = address;
         this.type = type;
         this.lat = lat;
         this.lng = lng;
+        this.thumbnail = thumbnail;
+        this.rating = rating;
     }
 
     /**
@@ -39,5 +45,10 @@ public class Restaurant {
     public double getLat() { return lat; }
 
     public double getLng() { return lng; }
+
+    public Bitmap getThumbnail() { return thumbnail; }
+
+    public Bitmap getRating() { return rating; }
+
 }
 

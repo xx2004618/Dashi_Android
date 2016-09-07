@@ -18,6 +18,9 @@ public class RestaurantListActivity extends FragmentActivity {
         Log.e("Life cycle test", "We are at onCreate()");
         // Show different fragments based on screen size.
         if (findViewById(R.id.fragment_container) != null) {
+            if (savedInstanceState != null) {
+                return;
+            }
             Fragment fragment = isTablet() ?
                     new RestaurantGridFragment() : new RestaurantListFragment();
             getSupportFragmentManager().beginTransaction()
