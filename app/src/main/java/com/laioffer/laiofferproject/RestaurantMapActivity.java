@@ -11,11 +11,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RestaurantMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public final static String EXTRA_LATLNG = "EXTRA_LATLNG";
+    public final static String EXTRA_BUSINESS_NAME = "EXTRA_BUSINESS_NAME";
 
-    private LatLng toMark;
+    private ArrayList<LatLng> toMark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,24 +27,25 @@ public class RestaurantMapActivity extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_restaurant_map);
 
         MapFragment mapFragment =
-                (MapFragment) getFragmentManager().findFragmentById(R.id.restaurant_map);
+            (MapFragment) getFragmentManager().findFragmentById(R.id.restaurant_map);
 
-        // This function automatically initializes the maps system and the view.
-        mapFragment.getMapAsync(this);
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            toMark = bundle.getParcelable(EXTRA_LATLNG);
+            // This function automatically initializes the maps system and the view.
+            mapFragment.getMapAsync(this);
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                toMark = bundle.getParcelableArrayList(EXTRA_LATLNG);
+            }
         }
 
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
+        @Override
+        public void onMapReady(GoogleMap map) {
 //        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-        if (toMark != null) {
-            map.addMarker(new MarkerOptions().position(toMark).title("Marker"));
-            map.moveCamera(CameraUpdateFactory.newLatLng(toMark));
-            map.animateCamera(CameraUpdateFactory.zoomTo(11), 2000, null);
+            if (toMark != null) {
+                for (int i = 0; i < toMark.size(); i++) {
+                    map.addMarker(new MarkerOptions().position(toMark.get(i)).title("Marker"));
+                }
+                map.moveCamera(CameraUpdateFactory.newLatLng(toMark.get(0)));
+                map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
         }
     }
 }

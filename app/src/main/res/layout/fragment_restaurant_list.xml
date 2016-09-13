@@ -7,10 +7,26 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context="com.laioffer.laiofferproject.RestaurantListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/restaurant_list"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"></ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mapViewBtn"
+            android:text="Map View"
+            />
+
+        <ListView
+            android:id="@+id/restaurant_list"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"></ListView>
+
+    </LinearLayout>
+
 
 </android.support.v4.widget.SwipeRefreshLayout
     >

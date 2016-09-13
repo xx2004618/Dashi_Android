@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,31 +32,34 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class RestaurantListFragment extends Fragment {
+    private View view;
     private ListView listView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DataService dataService;
+    private Button mapViewBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_restaurant_list, container, false);
-        View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
+        view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
         listView = (ListView) view.findViewById(R.id.restaurant_list);
+        mapViewBtn = (Button) view.findViewById(R.id.mapViewBtn);
+
         // Set a listener to ListView.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Restaurant r = (Restaurant) listView.getItemAtPosition(position);
-//                Intent intent = new Intent(view.getContext(), RestaurantMapActivity.class);
+                ArrayList<LatLng> latLngs = new ArrayList<LatLng>();
 
+                latLngs.add(getLatLngByPosition(position));
                 // Prepare all the data we need to start map activity.
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(
+                bundle.putParcelableArrayList(
                         RestaurantMapActivity.EXTRA_LATLNG,
-                        new LatLng(r.getLat(), r.getLng()));
+                        latLngs
+                );
                 Intent intent = new Intent(view.getContext(), RestaurantMapActivity.class);
                 intent.putExtras(bundle);
 
@@ -73,7 +78,35 @@ public class RestaurantListFragment extends Fragment {
             }
         });
 
+        mapViewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listView != null) {
+                    ArrayList<LatLng> latLngs = new ArrayList<LatLng>();
+                    for (int i = 0; i < listView.getCount(); i++) {
+                        latLngs.add(getLatLngByPosition(i));
+                    }
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(
+                            RestaurantMapActivity.EXTRA_LATLNG,
+                            latLngs
+                    );
+
+                    Intent intent = new Intent(view.getContext(), RestaurantMapActivity.class);
+                    intent.putExtras(bundle);
+
+                    startActivity(intent);
+                }
+
+            }
+        });
         return view;
+    }
+
+    private LatLng getLatLngByPosition(int position) {
+        Restaurant r = (Restaurant) listView.getItemAtPosition(position);
+        return new LatLng(r.getLat(), r.getLng());
     }
 
     // Make a async call to get restaurant data.
